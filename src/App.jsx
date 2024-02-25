@@ -10,7 +10,7 @@ import { collection, where, query, getDocs, orderBy } from "firebase/firestore";
 function App() {
   const [jobs, setJobs] = useState([]);
   const[customSearch,setCustomSearch] = useState(false);
-
+  
   const fetchJobs = async () => {
     setCustomSearch(false);
     const jobsRef = query(collection(db, "jobs"));
