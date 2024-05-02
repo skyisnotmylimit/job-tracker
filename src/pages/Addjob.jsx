@@ -15,15 +15,27 @@ function Addjob() {
   const navigate = useNavigate();
 
   const handleEmailSignIn = async () => {
+    let errorMessage = null;
     try {
+      if (!email || !password) {
+        throw new Error("Please provide both email and password.");
+      }
       await signInWithEmailAndPassword(email, password);
       // Handle successful sign-in (e.g., redirect)
       console.log("Signed in with email/password successfully!");
       navigate("/jobform")
     } catch (error) {
-      setError(error.message)
-      console.error("Error signing in with email/password:", err);
-      alert(err);
+      errorMessage = "An error occurred while signing in.";
+      if (error.code === "auth/invalid-email") {
+        errorMessage = "Invalid email address.";
+      } else if (error.code === "auth/user-not-found") {
+        errorMessage = "User not found. Please check your email and try again.";
+      } else if (error.code === "auth/wrong-password") {
+        errorMessage = "Incorrect password. Please try again.";
+      }
+      console.error("Error signing in:", error.message);
+      setError(errorMessage);
+      alert(errorMessage);
     }
   };
 
@@ -35,8 +47,8 @@ function Addjob() {
       navigate("/jobform");
     } catch (error) {
       setError(error.message);
-      console.error("Error signing up with email/password:", err);
-      alert(err);
+      console.error("Error signing up with email/password:", error);
+      alert(error);
     }
   };
 
@@ -48,8 +60,8 @@ function Addjob() {
       navigate("/jobform")
     } catch (error) {
       setError(error.message)
-      console.error("Error signing in with Google:", err);
-      alert(err);
+      console.error("Error signing in with Google:", error);
+      alert(error);
     }
   };
 
@@ -66,7 +78,7 @@ function Addjob() {
           <div className="flex flex-col m-3">
             <input
               className="py-2 pl-4 bg-zinc-200 rounded-md mt-3 placeholder-gray-600"
-              type="text"
+              type="email"
               placeholder="Enter Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}

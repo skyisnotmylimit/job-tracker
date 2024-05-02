@@ -14,7 +14,6 @@ const firebaseConfig = {
 // Initialize Firebase app
 const app = initializeApp(firebaseConfig);
 
-
 const firestore = getFirestore(app);
 // Get authentication instance
 const auth = getAuth(app);
@@ -27,6 +26,7 @@ const signInWithEmailAndPassword = async (email, password) => {
     // Handle successful sign-in (e.g., redirect)
   } catch (error) {
     console.error("Error signing in:", error.message);
+    throw new Error(error);
     // Handle sign-in error (e.g., display error message)
   }
 };
