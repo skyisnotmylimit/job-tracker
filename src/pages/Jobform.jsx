@@ -1,9 +1,18 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { uploadFormData } from "../../firebaseService";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
+import { auth } from "../../firebase";
+import { useNavigate } from "react-router-dom";
 
 function Jobform() {
+  const user = auth.currentUser;
+  const navigate = useNavigate();
+  useEffect(()=>{
+    if(user == null){
+      navigate("/")
+    }
+  })
   const [formData, setFormData] = useState({
     company: "",
     title: "",
